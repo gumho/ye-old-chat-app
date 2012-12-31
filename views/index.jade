@@ -1,0 +1,55 @@
+!!!5
+html
+  head
+    link(rel='stylesheet', href='/main.css')
+    script(src='jquery.min.js')
+    script(src='socket.io/socket.io.js')
+    script
+      "use strict"
+
+      function scroll() {
+        $('ul').scrollTop($('ul').height());
+      }
+
+      $(document).ready(function() {
+        // set guest nick
+        var nick = 'guest' + Math.floor(Math.random()*111111);
+
+        // socket io stuff
+        var socket = io.connect('http://localhost:8000');
+        
+        socket.on('connect', function() {
+          socket.emit('register nick', nick);
+        });
+
+        socket.on('announcement', function(msg) {
+          $('ul.messages').append('<li>' + msg + '</li>');
+        });
+
+        socket.on('user message', function(nick, msg) {
+          console.log(msg);
+          $('ul.messages').append('<li>' + nick + ': ' + msg + '</li>');
+          scroll();
+        });
+
+        // dom 
+        $('#nick').html(nick);
+
+        // dom handlers
+        $('form').submit(function() {
+          var msg = $('input').val();
+          socket.emit('user message', nick, msg);
+          $('ul.messages').append('<li>You: ' + msg + '</li>');
+          scroll();
+          $('#msg').val('');
+          return false;
+        });
+      });
+
+  body
+    h1 Ye Old Chat App
+    p Your nick: 
+        span#nick
+    ul.messages
+    form
+      input#msg(name='msg')

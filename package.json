@@ -1,0 +1,12 @@
+{
+  "name": "ye old chat app",
+  "description": "ye old chat app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "socket.io": "*",
+    "jade": "*",
+    "stylus": "*"
+  }
+}
