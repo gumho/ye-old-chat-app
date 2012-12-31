@@ -38,7 +38,7 @@ html
         // dom handlers
         $('form').submit(function() {
           var msg = $('input').val();
-          socket.emit('user message', nick, msg);
+          socket.emit('user message', msg);
           $('ul.messages').append('<li>You: ' + msg + '</li>');
           scroll();
           $('#msg').val('');

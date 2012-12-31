@@ -28,8 +28,8 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('announcement', nick + ' connected');
   });
 
-  socket.on('user message', function(nick, msg) {
-    socket.broadcast.emit('user message', nick, msg);
+  socket.on('user message', function(msg) {
+    socket.broadcast.emit('user message', socket.nickname, msg);
   });
 
   socket.on('disconnect', function() {
