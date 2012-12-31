@@ -38,11 +38,11 @@ html
         $('#nick').html(nick);
 
         // dom handlers
-        $('form').submit(function() {
-          var msg = $('input').val();
+        $('form#msg').submit(function() {
+          var msg = $('#msg-field').val();
           socket.emit('user message', msg);
           addMessage('You: ' + msg);
-          $('#msg').val('');
+          $('#msg-field').val('');
           return false;
         });
       });
@@ -52,5 +52,5 @@ html
     p Your nick: 
         span#nick
     ul.messages
-    form
-      input#msg(name='msg')
+    form#msg
+      input#msg-field
