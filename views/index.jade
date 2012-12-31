@@ -7,8 +7,12 @@ html
     script
       "use strict"
 
-      function scroll() {
-        $('ul').scrollTop($('ul').height());
+      function addMessage(msg, type) {
+        var $messages = $('ul.messages');
+        $messages.append('<li>' + msg + '</li>');
+
+        // scroll
+        $messages.scrollTop($('ul').height());
       }
 
       $(document).ready(function() {
@@ -23,24 +27,21 @@ html
         });
 
         socket.on('announcement', function(msg) {
-          $('ul.messages').append('<li>' + msg + '</li>');
+          addMessage(msg);
         });
 
         socket.on('user message', function(nick, msg) {
-          console.log(msg);
-          $('ul.messages').append('<li>' + nick + ': ' + msg + '</li>');
-          scroll();
+          addMessage(nick + ': ' + msg)
         });
 
-        // dom 
+        // dom manipulation
         $('#nick').html(nick);
 
         // dom handlers
         $('form').submit(function() {
           var msg = $('input').val();
           socket.emit('user message', msg);
-          $('ul.messages').append('<li>You: ' + msg + '</li>');
-          scroll();
+          addMessage('You: ' + msg);
           $('#msg').val('');
           return false;
         });
